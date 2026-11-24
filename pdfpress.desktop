@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=PDF Press
+Comment=Compress a local PDF
+Exec=/home/noah/.local/bin/pdfpress
+Icon=application-pdf
+Categories=Utility;
+Terminal=false
