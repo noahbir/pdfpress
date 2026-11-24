@@ -53,6 +53,12 @@ ApplicationWindow {
         Button {
             Material.roundedScale: Material.NotRounded
             text: qsTr("Change location…")
+            implicitHeight: 32
+            font.pixelSize: 13
+            horizontalPadding: 10
+            verticalPadding: 2
+            topInset: 2
+            bottomInset: 2
             enabled: !win.working
             onClicked: folderPicker.open()
         }
