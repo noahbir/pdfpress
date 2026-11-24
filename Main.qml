@@ -14,13 +14,18 @@ ApplicationWindow {
     title: qsTr("PDF Press")
     color: "#191c1b"
     font.family: "Inter"
-    font.pixelSize: 14
+    font.pixelSize: win.px(14)
     Material.theme: Material.Dark
     Material.accent: accent
     readonly property color accent: "#b8d0c2"
     readonly property color ink: "#eef0ed"
     readonly property color muted: "#abb4ae"
     readonly property color line: "#465049"
+    // Blend width and height so resizing either dimension adjusts the controls.
+    readonly property real uiScale: Math.max(0.9, Math.min(1.65,
+        Math.sqrt((width / 640) * (height / 560))))
+    function px(value) { return Math.round(value * uiScale) }
+
     property url selected
     property var details: ({})
     property url destination
@@ -56,19 +61,19 @@ ApplicationWindow {
         id: scroll
         anchors.fill: parent
         contentWidth: availableWidth
-        contentHeight: Math.max(win.height, form.implicitHeight + 64)
+        contentHeight: Math.max(win.height, form.implicitHeight + 2 * form.y)
         ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
         ColumnLayout {
             id: form
-            width: Math.min(480, scroll.availableWidth - 48)
-            x: 24
-            y: 24
+            width: Math.min(win.px(480), scroll.availableWidth - 2 * x)
+            x: win.px(24)
+            y: win.px(24)
             spacing: 0
 
-            Label { text: win.title; font.pixelSize: 33; color: win.ink }
+            Label { text: win.title; font.pixelSize: win.px(33); color: win.ink }
             Label {
-                Layout.topMargin: 5
+                Layout.topMargin: win.px(5)
                 Layout.fillWidth: true
                 wrapMode: Text.WordWrap
                 text: qsTr("Smaller PDFs, with control over image quality.")
@@ -77,20 +82,20 @@ ApplicationWindow {
 
             Button {
                 id: zone
-                Layout.topMargin: 26
+                Layout.topMargin: win.px(26)
                 Layout.fillWidth: true
-                Layout.preferredHeight: 108
+                Layout.preferredHeight: win.px(108)
                 enabled: !win.working
                 text: win.details.name || qsTr("Drop a PDF here, or click to choose")
                 Accessible.name: text
                 onClicked: picker.open()
                 background: Rectangle {
-                    radius: 6
+                    radius: win.px(6)
                     color: zone.hovered || drop.containsDrag ? "#2a312d" : "#212623"
                     border.color: drop.containsDrag || zone.visualFocus ? win.accent : win.line
                 }
                 contentItem: ColumnLayout {
-                    spacing: 6
+                    spacing: win.px(6)
                     Item { Layout.fillHeight: true }
                     Label {
                         Layout.fillWidth: true
@@ -99,14 +104,14 @@ ApplicationWindow {
                         textFormat: Text.PlainText
                         elide: Text.ElideMiddle
                         color: win.ink
-                        font.pixelSize: 16
+                        font.pixelSize: win.px(16)
                     }
                     Label {
                         Layout.fillWidth: true
                         horizontalAlignment: Text.AlignHCenter
                         text: win.details.size || qsTr("One file at a time · processed on your device")
                         color: win.muted
-                        font.pixelSize: 13
+                        font.pixelSize: win.px(13)
                         font.features: { "tnum": 1 }
                     }
                     Item { Layout.fillHeight: true }
@@ -122,32 +127,34 @@ ApplicationWindow {
                 }
             }
 
-            Label { Layout.topMargin: 22; text: qsTr("Image quality"); color: win.ink }
+            Label { Layout.topMargin: win.px(22); text: qsTr("Image quality"); color: win.ink }
             ComboBox {
                 id: quality
-                Layout.topMargin: 6
-                Layout.preferredWidth: 205
+                Layout.topMargin: win.px(6)
+                Layout.preferredWidth: win.px(205)
                 enabled: !win.working
+                font.pixelSize: win.px(14)
+                Layout.preferredHeight: win.px(44)
                 Accessible.name: qsTr("Image quality")
                 model: [qsTr("High · 200 dpi"), qsTr("Balanced · 144 dpi"), qsTr("Smallest · 85 dpi")]
                 currentIndex: 1
                 font.features: { "tnum": 1 }
                 background: Rectangle {
-                    implicitHeight: 40
-                    radius: 4
+                    implicitHeight: win.px(40)
+                    radius: win.px(4)
                     color: "#242926"
                     border.color: quality.visualFocus ? win.accent : win.line
                 }
             }
             RowLayout {
-                Layout.topMargin: 14
+                Layout.topMargin: win.px(14)
                 Layout.fillWidth: true
-                spacing: 8
+                spacing: win.px(8)
                 Label {
                     Layout.fillWidth: true
                     textFormat: Text.PlainText
                     wrapMode: Text.Wrap
-                    font.pixelSize: 13
+                    font.pixelSize: win.px(13)
                     color: win.muted
                     text: win.destination.toString()
                           ? qsTr("Save copy in %1").arg(compressor.folderPath(win.destination))
@@ -155,22 +162,23 @@ ApplicationWindow {
                 }
                 Button {
                     id: change
+                    Layout.preferredHeight: win.px(44)
                     flat: true
                     enabled: !win.working
                     text: qsTr("Change…")
                     Accessible.name: qsTr("Change save location")
                     font.capitalization: Font.MixedCase
-                    font.pixelSize: 13
+                    font.pixelSize: win.px(13)
                     Material.foreground: win.accent
-                    horizontalPadding: 5
+                    horizontalPadding: win.px(5)
                     onClicked: folderPicker.open()
                 }
             }
             Button {
                 id: submit
-                Layout.topMargin: 12
+                Layout.topMargin: win.px(12)
                 Layout.fillWidth: true
-                Layout.preferredHeight: 42
+                Layout.preferredHeight: win.px(42)
                 text: win.working ? qsTr("Compressing…") : qsTr("Compress PDF")
                 enabled: !!win.details.name && !win.working
                 contentItem: Label {
@@ -178,10 +186,11 @@ ApplicationWindow {
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
                     color: submit.enabled ? "#19251e" : "#9aa39d"
+                    font.pixelSize: win.px(14)
                     font.weight: Font.Medium
                 }
                 background: Rectangle {
-                    radius: 4
+                    radius: win.px(4)
                     color: !submit.enabled ? "#2b302d" : submit.down ? "#a5baae" : submit.hovered ? "#cadcd1" : win.accent
                     border.color: submit.visualFocus ? win.ink : color
                 }
@@ -195,7 +204,7 @@ ApplicationWindow {
                 id: status
                 visible: text.length > 0
                 Layout.fillWidth: true
-                Layout.topMargin: 12
+                Layout.topMargin: win.px(12)
                 wrapMode: Text.Wrap
                 textFormat: Text.PlainText
                 color: win.muted
