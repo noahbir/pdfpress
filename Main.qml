@@ -29,15 +29,16 @@ ApplicationWindow {
         anchors.fill: parent
         anchors.margins: 28
         spacing: 10
-        Label { text: qsTr("Compress a PDF"); font.pixelSize: 30 }
+        Label { text: win.title; font.pixelSize: 30; font.bold: true }
         Label { text: qsTr("The smaller copy is saved beside your original.") }
         RowLayout {
-            Button { text: qsTr("Choose PDF…"); enabled: !win.working; onClicked: picker.open() }
+            Button { Material.roundedScale: Material.NotRounded; text: qsTr("Choose PDF…"); enabled: !win.working; onClicked: picker.open() }
             Label { Layout.fillWidth: true; elide: Text.ElideMiddle; text: win.selected.toString() ? decodeURIComponent(win.selected.toString().split("/").pop()) : qsTr("No file selected") }
         }
         Label { text: qsTr("Image quality") }
         ComboBox { id: quality; Layout.fillWidth: true; enabled: !win.working; model: [qsTr("High · 200 dpi"), qsTr("Balanced · 144 dpi"), qsTr("Smallest · 85 dpi")]; currentIndex: 1 }
         Button {
+            Material.roundedScale: Material.NotRounded
             highlighted: true
             enabled: !win.working && win.selected.toString() !== ""
             text: win.working ? qsTr("Compressing…") : qsTr("Compress PDF")
