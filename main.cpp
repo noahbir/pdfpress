@@ -6,6 +6,7 @@
 #include <QTemporaryDir>
 #include <QProcess>
 #include <QFileInfo>
+#include <QVariantMap>
 #include <QDir>
 #include <QLocale>
 #include <fcntl.h>
@@ -42,12 +43,22 @@ public:
     }
     ~Compressor() { worker.kill(); worker.waitForFinished(); }
     void finish(const QString &message) { temp.reset(); emit done(message); }
+    static bool openPdf(QFile &file) {
+        return QFileInfo(file).isFile() && file.open(QIODevice::ReadOnly)
+            && file.peek(1024).contains("%PDF-");
+    }
+    Q_INVOKABLE QVariantMap fileDetails(QUrl url) const {
+        QFile file(url.toLocalFile());
+        if (!url.isLocalFile() || !openPdf(file)) return {};
+        return {{"name", QFileInfo(file).fileName()},
+                {"size", QLocale().formattedDataSize(file.size())}};
+    }
     Q_INVOKABLE QString folderPath(QUrl folder) const { return folder.toLocalFile(); }
     Q_INVOKABLE void compress(QUrl url, int level, QUrl folder = {}) {
         if (temp) return;
         source = url.toLocalFile();
         QFile file(source);
-        if (!file.open(QIODevice::ReadOnly) || !file.peek(1024).contains("%PDF-"))
+        if (!openPdf(file))
             return finish(tr("Choose a readable PDF file."));
         originalSize = file.size();
         if (!folder.isEmpty() && !folder.isLocalFile())
