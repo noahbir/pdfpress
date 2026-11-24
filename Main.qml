@@ -42,30 +42,26 @@ ApplicationWindow {
         }
         Label { text: qsTr("Image quality") }
         ComboBox { id: quality; Layout.fillWidth: true; enabled: !win.working; model: [qsTr("High · 200 dpi"), qsTr("Balanced · 144 dpi"), qsTr("Smallest · 85 dpi")]; currentIndex: 1 }
+        Label {
+            Layout.fillWidth: true
+            textFormat: Text.PlainText
+            wrapMode: Text.WrapAnywhere
+            text: win.destination.toString()
+                  ? qsTr("The compressed copy will be saved in %1.").arg(compressor.folderPath(win.destination))
+                  : qsTr("The compressed copy will be saved next to the original PDF.")
+        }
+        Button {
+            Material.roundedScale: Material.NotRounded
+            text: qsTr("Change location…")
+            enabled: !win.working
+            onClicked: folderPicker.open()
+        }
         Button {
             Material.roundedScale: Material.NotRounded
             highlighted: true
             enabled: !win.working && win.selected.toString() !== ""
             text: win.working ? qsTr("Compressing…") : qsTr("Compress PDF")
             onClicked: { win.working = true; status.text = ""; compressor.compress(win.selected, quality.currentIndex, win.destination) }
-        }
-        Button {
-            Layout.fillWidth: true
-            flat: true
-            enabled: !win.working
-            font.underline: true
-            text: win.destination.toString()
-                  ? qsTr("Save copy in %1").arg(compressor.folderPath(win.destination))
-                  : qsTr("Save copy beside the original")
-            contentItem: Label {
-                text: parent.text
-                font: parent.font
-                textFormat: Text.PlainText
-                elide: Text.ElideMiddle
-                verticalAlignment: Text.AlignVCenter
-                color: win.Material.accent
-            }
-            onClicked: folderPicker.open()
         }
         Label { id: status; Layout.fillWidth: true; wrapMode: Text.WrapAnywhere; textFormat: Text.PlainText }
         Item { Layout.fillHeight: true }
