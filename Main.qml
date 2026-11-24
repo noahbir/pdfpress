@@ -22,7 +22,7 @@ ApplicationWindow {
     readonly property color muted: "#abb4ae"
     readonly property color line: "#465049"
     // Blend width and height so resizing either dimension adjusts the controls.
-    readonly property real uiScale: Math.max(0.9, Math.min(1.65,
+    readonly property real uiScale: Math.max(0.9, Math.min(1.1,
         Math.sqrt((width / 640) * (height / 560))))
     function px(value) { return Math.round(value * uiScale) }
 
