@@ -62,8 +62,8 @@ ApplicationWindow {
         ColumnLayout {
             id: form
             width: Math.min(480, scroll.availableWidth - 48)
-            x: (scroll.availableWidth - width) / 2
-            y: 32
+            x: 24
+            y: 24
             spacing: 0
 
             Label { text: win.title; font.pixelSize: 33; color: win.ink }
