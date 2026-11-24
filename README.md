@@ -1,6 +1,6 @@
 # PDF Press
 
-I used PDF Press on Linux to shrink large PDFs. It runs Ghostscript locally and saves a smaller copy beside the original.
+I used PDF Press on Linux to shrink large PDFs. It runs Ghostscript locally and saves a smaller copy beside the original by default. Click the underlined save location below **Compress PDF** to choose another folder.
 
 ## Build and run on Linux
 
