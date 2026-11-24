@@ -35,7 +35,7 @@ ApplicationWindow {
         anchors.fill: parent
         anchors.margins: 28
         spacing: 10
-        Label { text: win.title; font.pixelSize: 30; font.bold: true }
+        Label { text: win.title; font.pixelSize: 33; font.bold: true; font.underline: true }
         RowLayout {
             Button { Material.roundedScale: Material.NotRounded; text: qsTr("Choose PDF…"); enabled: !win.working; onClicked: picker.open() }
             Label { Layout.fillWidth: true; elide: Text.ElideMiddle; text: win.selected.toString() ? decodeURIComponent(win.selected.toString().split("/").pop()) : qsTr("No file selected") }
