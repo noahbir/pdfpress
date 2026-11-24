@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <title>Screw press</title>
+  <rect x="2" y="2" width="60" height="60" rx="12" fill="#243633"/>
+  <g stroke="#b4cec2" stroke-width="5" stroke-linecap="round" fill="none">
+    <path d="M14 53V22h36v31M11 53h42"/>
+    <path d="M32 11v23M22 11h20" stroke="#f6ce86"/>
+  </g>
+  <rect x="21" y="33" width="22" height="6" rx="1" fill="#f6ce86"/>
+  <path d="M21 46h22" stroke="#f1f5ef" stroke-width="4"/>
+</svg>

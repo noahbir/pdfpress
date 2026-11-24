@@ -1,4 +1,5 @@
 #include <QGuiApplication>
+#include <QIcon>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QQuickStyle>
@@ -68,6 +69,7 @@ signals:
 int main(int argc, char **argv) {
     QGuiApplication app(argc, argv);
     app.setDesktopFileName("pdfpress");
+    app.setWindowIcon(QIcon(":/pdfpress.svg"));
     QQuickStyle::setStyle("Material");
     Compressor compressor;
     QQmlApplicationEngine engine;
